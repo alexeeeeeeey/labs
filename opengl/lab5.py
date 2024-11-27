@@ -32,7 +32,6 @@ MOONS = [
 ]
 
 
-
 def init_pygame(width, height):
     pygame.init()
     pygame.display.set_mode((width, height), DOUBLEBUF | OPENGL)
@@ -130,6 +129,7 @@ def main():
         pygame.display.flip()
         clock.tick(FPS)
         time += 1 / FPS
+
 
 if __name__ == "__main__":
     main()

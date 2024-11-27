@@ -28,7 +28,10 @@ def generate_flag_grid(width, height, segments_w, segments_h):
             indices.append([top_left, bottom_left, bottom_right])
             indices.append([top_left, bottom_right, top_right])
 
-    return np.array(vertices, dtype=np.float32), np.array(indices, dtype=np.uint32)
+    return np.array(vertices, dtype=np.float32), np.array(
+        indices, dtype=np.uint32
+    )
+
 
 pygame.init()
 screen = pygame.display.set_mode((800, 600), DOUBLEBUF | OPENGL)
@@ -43,7 +46,9 @@ flag_width = 4
 flag_height = 2
 segments_w = 20
 segments_h = 10
-vertices, indices = generate_flag_grid(flag_width, flag_height, segments_w, segments_h)
+vertices, indices = generate_flag_grid(
+    flag_width, flag_height, segments_w, segments_h
+)
 gluLookAt(1, 1, 3, 0, 0, 0, 0, 1, 0)
 time = 0.0
 

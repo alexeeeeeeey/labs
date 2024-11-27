@@ -8,6 +8,7 @@ radius = 1.0
 height = 2.0
 slices = 50
 
+
 def draw_cylinder():
     glBegin(GL_QUAD_STRIP)
     for i in range(slices + 1):
@@ -46,6 +47,7 @@ def draw_cylinder():
         glVertex3f(x, -height / 2, z)
     glEnd()
 
+
 def main():
     pygame.init()
     display = (800, 600)
@@ -70,6 +72,7 @@ def main():
         pygame.time.wait(10)
 
     pygame.quit()
+
 
 if __name__ == "__main__":
     main()

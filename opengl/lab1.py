@@ -16,7 +16,7 @@ from OpenGL.GL import (
     glEnd,
     glVertex3f,
     glRotatef,
-    glColor3f
+    glColor3f,
 )
 from OpenGL.GLU import gluPerspective, gluLookAt
 
@@ -54,7 +54,7 @@ def draw_cube():
         (1.0, -1.0, 1.0),
         (-1.0, -1.0, 1.0),
         (-1.0, -1.0, -1.0),
-        (1.0, -1.0, -1.0)
+        (1.0, -1.0, -1.0),
     ]
 
     colors = [
