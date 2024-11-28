@@ -5,83 +5,135 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.metrics import accuracy_score
 
 
-def relu(x):
-    return np.maximum(0, x)
-
-
-def relu_d(x):
-    return np.where(x > 0, 1, 0)
-
-
-def softmax(x):
-    exp_x = np.exp(x - np.max(x, axis=1, keepdims=True))
-    return exp_x / np.sum(exp_x, axis=1, keepdims=True)
-
-
 class NeuralNetwork:
-    def __init__(self, input_size, hidden_size, output_size):
-        self.w1 = np.random.randn(input_size, hidden_size) * 0.01
-        self.b1 = np.zeros((1, hidden_size))
-        self.w2 = np.random.randn(hidden_size, output_size) * 0.01
-        self.b2 = np.zeros((1, output_size))
+    def __init__(self, input_size, hidden_layer_size, output_size):
+        # Инициализация весов и смещений
+        self.weights_input_to_hidden = (
+            np.random.randn(input_size, hidden_layer_size) * 0.01
+        )
+        self.bias_hidden = np.zeros((1, hidden_layer_size))
+        self.weights_hidden_to_output = (
+            np.random.randn(hidden_layer_size, output_size) * 0.01
+        )
+        self.bias_output = np.zeros((1, output_size))
 
-    def forward_propagation(self, X):
-        self.hidden_input = np.dot(X, self.w1) + self.b1
-        self.hidden_output = relu(self.hidden_input)
-        self.output_input = np.dot(self.hidden_output, self.w2) + self.b2
-        self.output_output = softmax(self.output_input)
-        return self.output_output
+        # Переменные для промежуточных вычислений
+        self.input_data = None
+        self.hidden_layer_activations = None
+        self.output_layer_activations = None
 
-    def back_propagation(self, X, y, learning_rate):
-        m = y.shape[0]
-        d_output = (self.output_output - y) / m
-        d_w2 = np.dot(self.hidden_output.T, d_output)
-        d_b2 = np.sum(d_output, axis=0, keepdims=True)
-        d_hidden = np.dot(d_output, self.w2.T) * relu_d(self.hidden_input)
-        d_w1 = np.dot(X.T, d_hidden)
-        d_b1 = np.sum(d_hidden, axis=0, keepdims=True)
-        self.w2 -= learning_rate * d_w2
-        self.b2 -= learning_rate * d_b2
-        self.w1 -= learning_rate * d_w1
-        self.b1 -= learning_rate * d_b1
+    @staticmethod
+    def relu(x):
+        return np.maximum(0, x)
 
-    def train(self, X, y, epochs, learning_rate):
+    @staticmethod
+    def relu_derivative(x):
+        return np.where(x > 0, 1, 0)
+
+    @staticmethod
+    def softmax(x):
+        exp_x = np.exp(x - np.max(x, axis=1, keepdims=True))
+        return exp_x / np.sum(exp_x, axis=1, keepdims=True)
+
+    def forward(self, input_data):
+        # Прямой проход
+        self.input_data = input_data
+        hidden_layer_input = (
+            np.dot(self.input_data, self.weights_input_to_hidden)
+            + self.bias_hidden
+        )
+        self.hidden_layer_activations = self.relu(hidden_layer_input)
+        output_layer_input = (
+            np.dot(
+                self.hidden_layer_activations, self.weights_hidden_to_output
+            )
+            + self.bias_output
+        )
+        self.output_layer_activations = self.softmax(output_layer_input)
+        return self.output_layer_activations
+
+    def backward(self, target_labels, learning_rate):
+        # Обратный проход
+        num_samples = target_labels.shape[0]
+
+        # Ошибка и градиенты для выходного слоя
+        output_error = (
+            self.output_layer_activations - target_labels
+        ) / num_samples
+        gradient_weights_hidden_to_output = np.dot(
+            self.hidden_layer_activations.T, output_error
+        )
+        gradient_bias_output = np.sum(output_error, axis=0, keepdims=True)
+
+        # Ошибка и градиенты для скрытого слоя
+        hidden_error = np.dot(
+            output_error, self.weights_hidden_to_output.T
+        ) * self.relu_derivative(self.hidden_layer_activations)
+        gradient_weights_input_to_hidden = np.dot(
+            self.input_data.T, hidden_error
+        )
+        gradient_bias_hidden = np.sum(hidden_error, axis=0, keepdims=True)
+
+        # Обновление весов и смещений
+        self.weights_hidden_to_output -= (
+            learning_rate * gradient_weights_hidden_to_output
+        )
+        self.bias_output -= learning_rate * gradient_bias_output
+        self.weights_input_to_hidden -= (
+            learning_rate * gradient_weights_input_to_hidden
+        )
+        self.bias_hidden -= learning_rate * gradient_bias_hidden
+
+    def train(self, input_data, target_labels, epochs, learning_rate):
         for epoch in range(epochs):
-            self.forward_propagation(X)
-            self.back_propagation(X, y, learning_rate)
-            if epoch % 50 == 0:
-                print(f"Эпоха: {epoch}")
+            # Прямой и обратный проходы
+            self.forward(input_data)
+            self.backward(target_labels, learning_rate)
 
-    def predict(self, X):
-        output = self.forward_propagation(X)
-        return np.argmax(output, axis=1)
+            # Лог потерь каждые 50 эпох
+            if epoch % 50 == 0 or epoch == epochs - 1:
+                loss = -np.mean(
+                    target_labels
+                    * np.log(self.output_layer_activations + 1e-9)
+                )
+                print(f"Эпоха: {epoch}, Потеря: {loss:.4f}")
+
+    def predict(self, input_data):
+        # Предсказание классов
+        output_probabilities = self.forward(input_data)
+        return np.argmax(output_probabilities, axis=1)
 
 
-# Загружаем набор данных и подготавливаем его
-digits = load_digits()
-X = digits.data
-y = digits.target
+def main():
+    # Загрузка набора данных
+    digits = load_digits()
+    features = digits.data
+    labels = digits.target
 
-# Преобразуем метки в формат one-hot
-encoder = OneHotEncoder(sparse_output=False)
-y_one_hot = encoder.fit_transform(y.reshape(-1, 1))
+    # Преобразование меток в формат one-hot
+    encoder = OneHotEncoder(sparse_output=False)
+    labels_one_hot = encoder.fit_transform(labels.reshape(-1, 1))
 
-# Разделяем данные на обучающую и тестовую выборки
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y_one_hot, test_size=0.1
-)
+    # Разделение данных на обучающую и тестовую выборки
+    X_train, X_test, y_train, y_test = train_test_split(
+        features, labels_one_hot, test_size=0.1
+    )
 
-# Параметры модели
-input_size = X_train.shape[1]  # Количество входных данных (пикселей)
-hidden_size = 64  # Количество нейронов в скрытом слое
-output_size = y_one_hot.shape[1]  # Количество классов
+    # Параметры сети
+    hidden_neurons = 64                # Количество нейронов в скрытом слое
+    input_neurons = X_train.shape[1]
+    output_neurons = y_train.shape[1]
 
-# Создаем и обучаем нейронную сеть
-nn = NeuralNetwork(input_size, hidden_size, output_size)
-nn.train(X_train, y_train, epochs=1000, learning_rate=0.01)
+    # Создание и обучение модели
+    neural_net = NeuralNetwork(input_neurons, hidden_neurons, output_neurons)
+    neural_net.train(X_train, y_train, epochs=1000, learning_rate=0.01)
 
-# Оцениваем качество на тестовой выборке
-predictions = nn.predict(X_test)
-accuracy = accuracy_score(y_test.argmax(axis=1), predictions)
+    # Оценка качества модели
+    test_predictions = neural_net.predict(X_test)
+    test_accuracy = accuracy_score(y_test.argmax(axis=1), test_predictions)
 
-print(f"Точность предсказания: {accuracy:.4f}")
+    print(f"Точность на тестовой выборке: {test_accuracy:.4f}")
+
+
+if __name__ == "__main__":
+    main()
