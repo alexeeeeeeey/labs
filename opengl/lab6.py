@@ -115,64 +115,69 @@ def draw_cylinder(can_texture_id, can_up_down_texture_id):
     glEnd()
 
 
-pygame.init()
+def init_pygame(width, height):
+    pygame.init()
 
-width = 800
-height = 600
+    display = (width, height)
+    pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
 
-display = (width, height)
-pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
 
-glClearColor(0, 0, 0, 1.0)
-glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-glEnable(GL_DEPTH_TEST)
+def init_opengl(width, height):
+    glClearColor(0, 0, 0, 1)
+    glEnable(GL_DEPTH_TEST)
 
-glMatrixMode(GL_PROJECTION)
-glLoadIdentity()
+    glMatrixMode(GL_PROJECTION)
+    gluPerspective(45.0, width / height, 0.1, 100.0)
 
-gluPerspective(45.0, width / height, 0.1, 100.0)
+    glMatrixMode(GL_MODELVIEW)
+    glEnable(GL_TEXTURE_2D)
 
-glMatrixMode(GL_MODELVIEW)
-glLoadIdentity()
 
-can_texture_id = load_texture(
-    os.path.join(
-        pathlib.Path(__file__).parent.resolve(),
-        "textures",
-        "lab6",
-        "can_coca_loca.png",
+init_pygame(800, 600)
+init_opengl(800, 600)
+
+
+def main():
+    can_texture_id = load_texture(
+        os.path.join(
+            pathlib.Path(__file__).parent.resolve(),
+            "textures",
+            "lab6",
+            "can_coca_loca.png",
+        )
     )
-)
 
-can_up_down_texture_id = load_texture(
-    os.path.join(
-        pathlib.Path(__file__).parent.resolve(),
-        "textures",
-        "lab6",
-        "top_bot_can.png",
+    can_up_down_texture_id = load_texture(
+        os.path.join(
+            pathlib.Path(__file__).parent.resolve(),
+            "textures",
+            "lab6",
+            "top_bot_can.png",
+        )
     )
-)
 
-glEnable(GL_TEXTURE_2D)
+    rotation_angle = 0
 
-rotation_angle = 0
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
 
-while True:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            quit()
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        glLoadIdentity()
 
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        gluLookAt(3, 6, 12, 0, 0, 0, 0, 0, 1)
 
-    glLoadIdentity()
-    gluLookAt(3, 6, 12, 0, 0, 0, 0, 0, 1)
+        glRotatef(rotation_angle, 1, 1, 0)
 
-    glRotatef(rotation_angle, 1, 1, 0)
+        draw_cylinder(can_texture_id, can_up_down_texture_id)
 
-    draw_cylinder(can_texture_id, can_up_down_texture_id)
+        pygame.display.flip()
+        pygame.time.wait(10)
 
-    pygame.display.flip()
-    pygame.time.wait(10)
+        rotation_angle += 1
 
-    rotation_angle += 1
+
+if __name__ == "__main__":
+    main()
