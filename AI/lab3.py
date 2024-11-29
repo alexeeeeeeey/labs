@@ -120,7 +120,7 @@ def main():
     )
 
     # Параметры сети
-    hidden_neurons = 64                # Количество нейронов в скрытом слое
+    hidden_neurons = 64  # Количество нейронов в скрытом слое
     input_neurons = X_train.shape[1]
     output_neurons = y_train.shape[1]
 

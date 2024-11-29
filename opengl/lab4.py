@@ -1,7 +1,21 @@
 import pygame
-from pygame.locals import *
-from OpenGL.GL import *
-from OpenGL.GLU import *
+from pygame.locals import DOUBLEBUF, OPENGL, QUIT
+from OpenGL.GL import (
+    glEnable,
+    glClear,
+    GL_DEPTH_TEST,
+    GL_COLOR_BUFFER_BIT,
+    GL_DEPTH_BUFFER_BIT,
+    GL_PROJECTION,
+    GL_TRIANGLES,
+    glMatrixMode,
+    glBegin,
+    glEnd,
+    glVertex3f,
+    glTranslatef,
+    glColor3f,
+)
+from OpenGL.GLU import gluPerspective, gluLookAt
 import numpy as np
 
 

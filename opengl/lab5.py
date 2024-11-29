@@ -1,8 +1,37 @@
 import pygame
-from pygame.locals import *
-from OpenGL.GL import *
-from OpenGL.GLU import *
-from OpenGL.GLUT import *
+from pygame.locals import DOUBLEBUF, OPENGL, QUIT
+from OpenGL.GL import (
+    glClearColor,
+    glEnable,
+    glClear,
+    GL_DEPTH_TEST,
+    GL_COLOR_BUFFER_BIT,
+    GL_DEPTH_BUFFER_BIT,
+    GL_PROJECTION,
+    GL_MODELVIEW,
+    glMaterialfv,
+    glLoadIdentity,
+    glMatrixMode,
+    GL_FRONT,
+    GL_EMISSION,
+    GL_LIGHTING,
+    GL_LIGHT0,
+    GL_POSITION,
+    GL_DIFFUSE,
+    GL_SPECULAR,
+    glLightfv,
+    glPushMatrix,
+    glPopMatrix,
+    glTranslatef,
+    glColor3f,
+)
+from OpenGL.GLU import (
+    gluPerspective,
+    gluLookAt,
+    gluNewQuadric,
+    gluSphere,
+    gluDeleteQuadric,
+)
 import math
 
 # Константы

@@ -1,7 +1,21 @@
 import pygame
-from pygame.locals import *
-from OpenGL.GL import *
-from OpenGL.GLU import *
+from pygame.locals import DOUBLEBUF, OPENGL, QUIT
+from OpenGL.GL import (
+    glEnable,
+    glClear,
+    GL_DEPTH_TEST,
+    GL_COLOR_BUFFER_BIT,
+    GL_DEPTH_BUFFER_BIT,
+    GL_QUAD_STRIP,
+    GL_TRIANGLE_FAN,
+    glBegin,
+    glEnd,
+    glVertex3f,
+    glRotatef,
+    glTranslatef,
+    glColor3f,
+)
+from OpenGL.GLU import gluPerspective
 import numpy as np
 
 radius = 1.0
