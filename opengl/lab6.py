@@ -96,8 +96,9 @@ def draw_cylinder(can_texture_id, can_up_down_texture_id):
         angle = 2 * math.pi * i / segments
         x = radius * math.cos(angle)
         y = radius * math.sin(angle)
-        glTexCoord2f(0.5 + math.cos(angle) * 0.375,
-                     0.75 + math.sin(angle) * 0.175)
+        glTexCoord2f(
+            0.5 + math.cos(angle) * 0.375, 0.75 + math.sin(angle) * 0.175
+        )
         glVertex3f(x, y, height)
     glEnd()
 
@@ -109,8 +110,9 @@ def draw_cylinder(can_texture_id, can_up_down_texture_id):
         angle = 2 * math.pi * i / segments
         x = radius * math.cos(angle)
         y = radius * math.sin(angle)
-        glTexCoord2f(0.5 + math.cos(angle) * 0.375,
-                     0.25 + math.sin(angle) * 0.175)
+        glTexCoord2f(
+            0.5 + math.cos(angle) * 0.375, 0.25 + math.sin(angle) * 0.175
+        )
         glVertex3f(x, y, -height)
     glEnd()
 

@@ -18,9 +18,7 @@ def encrypt(text: str, column_key: list, row_key: list):
     return encrypted_text
 
 
-def decrypt(encrypted_text: list[list],
-            column_key: list,
-            row_key: list):
+def decrypt(encrypted_text: list[list], column_key: list, row_key: list):
     text = ""
     symbol_count = sum([len(i) for i in encrypted_text])
     columns = len(column_key)
@@ -75,8 +73,10 @@ def main():
 
             while True:
                 column_key = key_formatter(
-                    input(f"Введите ключ столбцов длинной {columns}\n"
-                          "(Например для длины 4 - 4 1 3 2): ")
+                    input(
+                        f"Введите ключ столбцов длинной {columns}\n"
+                        "(Например для длины 4 - 4 1 3 2): "
+                    )
                 )
                 if set(column_key) == set([i + 1 for i in range(columns)]):
                     break
@@ -84,8 +84,10 @@ def main():
 
             while True:
                 row_key = key_formatter(
-                    input(f"Введите ключ строк длинной {rows}\n"
-                          "(Например для длины 2 - 2 1): ")
+                    input(
+                        f"Введите ключ строк длинной {rows}\n"
+                        "(Например для длины 2 - 2 1): "
+                    )
                 )
                 if set(column_key) == set([i + 1 for i in range(columns)]):
                     break
