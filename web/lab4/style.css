@@ -88,11 +88,6 @@ p {
 @media (max-width: 768px) {
     .tech-card {
         width: 48%;
-        padding: 15px;
-        background-color: #1a1a1a;
-        color: #ff66cc;
-        border-radius: 8px;
-        text-align: center;
     }
     .tech-card h2 {
         font-size: 1em;
