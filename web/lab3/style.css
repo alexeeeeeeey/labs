@@ -1,0 +1,129 @@
+.header {
+    border: 5px solid black;
+    overflow: hidden;
+    padding: 20px 0 0 20px;
+    box-sizing: border-box;
+}
+
+.header img {
+    float: left;
+    height: 100px;
+    width: 100px;
+    border: 2px solid black;
+}
+
+.header-text {
+    float: left;
+    text-align: center;
+    width: 60%;
+    margin-right: 20px;
+}
+
+.navigation {
+    border: 5px solid black;
+    margin-top: 10px;
+    padding: 5px;
+}
+
+.navigation a {
+    text-decoration: none;
+    color: black;
+    display: inline-block;
+    border-radius: 5px;
+    border: 2px solid black;
+    padding: 5px 20px;
+}
+
+.main {
+    overflow: hidden;
+    margin-top: 5px;
+    border: 2px solid black;
+    padding: 5px;
+}
+
+.main-block:not(:first-child) {
+    border: 2px solid black;
+}
+.main-block {
+    margin: 5px 20px;
+    padding: 0 20px;
+}
+.main-block h1 {
+    margin: 10px 0;
+}
+
+.menu {
+    box-sizing: border-box;
+    border: 2px solid black;
+    width: 24%;
+    float: left;
+}
+.menu h1 {
+    width: 100%;
+    margin: 5px;
+}
+.menu a {
+    display: block;
+    margin-bottom: 10px;
+    width: 100%;
+    text-align: center;
+}
+
+.list {
+    padding-left: 10px;
+    box-sizing: border-box;
+    border: 2px solid black;
+    width: 75%;
+    float: right;
+}
+.list-item {
+    width: auto;
+    margin-right: 5px;
+    overflow: auto;
+    padding: 5px;
+    border: 2px solid black;
+    margin-bottom: 5px;
+}
+.list-item img {
+    border: 2px solid black;
+    height: 100px;
+    width: 100px;
+    float: left;
+}
+.item-text {
+    float: left;
+    margin-left: 5px;
+}
+
+.item-text h1, .item-text p {
+    margin: 0;
+}
+
+.main-block-cut {
+    margin-left: 10px;
+    float: right;
+    width: 30%;
+    height: 30%;
+    border: 2px solid black;
+}
+.main-block-cut img {
+    display: block;
+    width: 70px;
+    height: 40px;
+    float: left; /* Картинка будет обтекаться текстом слева */
+    margin-right: 10px; /* Добавляем отступ справа для текста */
+}
+
+.footer {
+    overflow: hidden;
+    margin-top: 5px;
+    border: 5px solid black;
+    font-size: x-large;
+}
+.footer p {
+    margin-left: 10px;
+}
+.footer a {
+    margin: 5px;
+    float: right;
+}

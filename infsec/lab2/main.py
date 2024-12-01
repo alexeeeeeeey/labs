@@ -13,7 +13,7 @@ def matrix_sum(str_length: int) -> list[int]:
 
         # Проставляем 1 в позиции, где бит участвует
         for i in range(bit_position - 1, str_length, 2 * bit_position):
-            row[i : i + bit_position] = [1] * min(bit_position, str_length - i)
+            row[i:i + bit_position] = [1] * min(bit_position, str_length - i)
 
         matrix.append(row)
         bit_position *= 2
@@ -44,7 +44,7 @@ def gen_code(seq: list) -> list[int]:
         parity_index = 2**i - 1
         parity = 0
         for j in range(parity_index, total_bits, 2 ** (i + 1)):
-            parity ^= sum(encoded[j : j + 2**i])
+            parity ^= sum(encoded[j:j + 2**i])
         encoded[parity_index] = parity % 2
 
     return encoded
@@ -63,7 +63,7 @@ def check_code(seq: list):
         parity_index = 2**i - 1
         parity = 0
         for j in range(parity_index, n, 2 ** (i + 1)):
-            parity ^= sum(seq[j : j + 2**i])
+            parity ^= sum(seq[j:j + 2**i])
         if parity % 2 != 0:
             error_pos += 2**i
 
