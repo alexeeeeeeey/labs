@@ -116,7 +116,7 @@ def main():
 
     # Разделение данных на обучающую и тестовую выборки
     X_train, X_test, y_train, y_test = train_test_split(
-        features, labels_one_hot, test_size=0.1
+        features, labels_one_hot, test_size=0.2
     )
 
     # Параметры сети
