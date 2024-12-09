@@ -4,10 +4,13 @@ def atbash_cipher(word, alphabet):
     Заменяет буквы слова на "зеркальные" по алфавиту.
     """
     # Создаем словарь соответствий для алфавита
-    atbash_mapping = {alphabet[i]: alphabet[-(i + 1)] for i in range(len(alphabet))}
+    atbash_mapping = {
+        alphabet[i]: alphabet[-(i + 1)] for i in range(len(alphabet))
+    }
     # Зашифровываем или расшифровываем слово
-    transformed_word = ''.join(atbash_mapping[char] for char in word)
+    transformed_word = "".join(atbash_mapping[char] for char in word)
     return transformed_word
+
 
 def main():
     # Исходный алфавит
@@ -38,6 +41,7 @@ def main():
         # Расшифровка (та же функция, так как метод Атбаш симметричен)
         result = atbash_cipher(word, alphabet)
         print(f"Расшифрованное слово: {result}")
+
 
 if __name__ == "__main__":
     main()

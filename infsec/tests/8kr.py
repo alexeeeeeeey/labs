@@ -8,7 +8,7 @@ def decrypt(message, rows, cols):
     :return: Расшифрованное сообщение.
     """
     # Создаём таблицу для расшифровки
-    table = [['' for _ in range(cols)] for _ in range(rows)]
+    table = [["" for _ in range(cols)] for _ in range(rows)]
     debt = rows * cols - len(message)
 
     # Заполняем таблицу пустыми ячейками ("Z"), если сообщение короче
@@ -35,8 +35,9 @@ def decrypt(message, rows, cols):
     for col in range(cols):
         for row in range(rows):
             res += table[row][col]
-    
-    return res.replace("Z", '')
+
+    return res.replace("Z", "")
+
 
 def encrypt(message, rows, cols):
     """
@@ -48,7 +49,7 @@ def encrypt(message, rows, cols):
     :return: Зашифрованное сообщение.
     """
     # Создаём таблицу для шифрования
-    table = [['' for _ in range(cols)] for _ in range(rows)]
+    table = [["" for _ in range(cols)] for _ in range(rows)]
     idx = 0
 
     # Заполняем таблицу по столбцам
@@ -61,9 +62,10 @@ def encrypt(message, rows, cols):
     # Читаем таблицу по строкам
     encrypted_message = ""
     for row in range(rows):
-        encrypted_message += ''.join(table[row])
-    
+        encrypted_message += "".join(table[row])
+
     return encrypted_message
+
 
 # Основной сценарий работы
 if __name__ == "__main__":

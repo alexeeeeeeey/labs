@@ -8,7 +8,9 @@ def generate_key_sequence(message, key, alphabet):
     :return: Последовательность чисел для ключа.
     """
     key_numbers = [alphabet.index(char) for char in key]
-    return (key_numbers * (len(message) // len(key_numbers) + 1))[:len(message)]
+    return (key_numbers * (len(message) // len(key_numbers) + 1))[
+        : len(message)
+    ]
 
 
 def gamma_cipher(message, key, alphabet, decrypt=False):
@@ -42,7 +44,7 @@ def gamma_cipher(message, key, alphabet, decrypt=False):
 
         result.append(reverse_dict[new_index])
 
-    return ''.join(result)
+    return "".join(result)
 
 
 def main():
@@ -55,23 +57,35 @@ def main():
     choice = input("Введите номер действия: ")
 
     if choice == "1":
-        message = input("Введите сообщение для зашифровки (только символы из алфавита): ").upper()
-        key = input("Введите ключ для зашифровки (только символы из алфавита): ").upper()
+        message = input(
+            "Введите сообщение для зашифровки (только символы из алфавита): "
+        ).upper()
+        key = input(
+            "Введите ключ для зашифровки (только символы из алфавита): "
+        ).upper()
         try:
             encrypted_message = gamma_cipher(message, key, alphabet)
             print(f"Зашифрованное сообщение: {encrypted_message}")
         except ValueError as e:
             print(f"Ошибка: {e}")
     elif choice == "2":
-        message = input("Введите сообщение для расшифровки (только символы из алфавита): ").upper()
-        key = input("Введите ключ для расшифровки (только символы из алфавита): ").upper()
+        message = input(
+            "Введите сообщение для расшифровки (только символы из алфавита): "
+        ).upper()
+        key = input(
+            "Введите ключ для расшифровки (только символы из алфавита): "
+        ).upper()
         try:
-            decrypted_message = gamma_cipher(message, key, alphabet, decrypt=True)
+            decrypted_message = gamma_cipher(
+                message, key, alphabet, decrypt=True
+            )
             print(f"Расшифрованное сообщение: {decrypted_message}")
         except ValueError as e:
             print(f"Ошибка: {e}")
     else:
-        print("Некорректный выбор. Перезапустите программу и попробуйте снова.")
+        print(
+            "Некорректный выбор. Перезапустите программу и попробуйте снова."
+        )
 
 
 if __name__ == "__main__":

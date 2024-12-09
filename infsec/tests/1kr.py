@@ -6,6 +6,7 @@ def find_caesar_key(plaintext, ciphertext, alphabet):
     key = (c_index - p_index) % len(alphabet)
     return key
 
+
 def decrypt_caesar(ciphertext, key, alphabet):
     decrypted_message = ""
     for char in ciphertext:
@@ -19,6 +20,7 @@ def decrypt_caesar(ciphertext, key, alphabet):
             # Если символа нет в алфавите, оставить как есть
             decrypted_message += char
     return decrypted_message
+
 
 def main():
     # Алфавит
@@ -49,9 +51,10 @@ def main():
         for key in range(1, len(alphabet)):  # 0 < n < 33
             decrypted_message = decrypt_caesar(ciphertext, key, alphabet)
             print(f"{decrypted_message}: Ключ {key}")
-        print("Ответ на задание - ключ исходного слова")            
+        print("Ответ на задание - ключ исходного слова")
     else:
         print("Неверный выбор.")
+
 
 if __name__ == "__main__":
     main()

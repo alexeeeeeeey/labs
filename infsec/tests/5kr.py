@@ -1,5 +1,6 @@
 alphabet = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ_.,"
 
+
 def build_matrix(keyword):
     to_insert = keyword + alphabet
     was = set()
@@ -19,11 +20,13 @@ def build_matrix(keyword):
     #     print(row)
     return matrix
 
+
 def find_position(matrix, char):
     for row_idx, row in enumerate(matrix):
         if char in row:
             return row_idx, row.index(char)
     return None
+
 
 def prepare_message(message):
     prepared = []
@@ -31,11 +34,12 @@ def prepare_message(message):
     while i < len(message):
         prepared.append(message[i])
         if i + 1 < len(message) and message[i] == message[i + 1]:
-            prepared.append('Ъ')
+            prepared.append("Ъ")
         i += 1
     if len(prepared) % 2 != 0:
-        prepared.append('Ъ')
+        prepared.append("Ъ")
     return prepared
+
 
 def playfair(message, key, mode="encode"):
     """
@@ -50,16 +54,16 @@ def playfair(message, key, mode="encode"):
         message_pairs = list(message)
     else:
         raise ValueError("Режим должен быть 'encode' или 'decode'")
-    
+
     # print("Message pairs:", message_pairs)
     processed_message = []
     shift = 1 if mode == "encode" else -1
-    
+
     for i in range(0, len(message_pairs), 2):
         char1, char2 = message_pairs[i], message_pairs[i + 1]
         row1, col1 = find_position(matrix, char1)
         row2, col2 = find_position(matrix, char2)
-        
+
         if row1 == row2:  # Одинаковая строка
             processed_message.append(matrix[row1][(col1 + shift) % 6])
             processed_message.append(matrix[row2][(col2 + shift) % 6])
@@ -85,8 +89,8 @@ def playfair(message, key, mode="encode"):
                     processed_message.append(matrix[row1][col2])
                     processed_message.append(matrix[row2][col1])
 
+    return "".join(processed_message)
 
-    return ''.join(processed_message)
 
 # # Пример использования
 # key = "МОРКОВЬ"
@@ -101,6 +105,7 @@ def playfair(message, key, mode="encode"):
 # message_to_decrypt = encrypted_message
 # decrypted_message = playfair(message_to_encrypt, key, mode="decode")
 # print(f"Расшифрованное сообщение: {decrypted_message.replace("Ъ", "")}")
+
 
 def main():
     print("Выберите действие:")
@@ -121,6 +126,7 @@ def main():
     elif choice == "2":
         result = playfair(message, key, mode="decode")
         print(f"Расшифрованное сообщение: {result.replace('Ъ', '')}")
+
 
 if __name__ == "__main__":
     main()

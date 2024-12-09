@@ -1,9 +1,10 @@
 from itertools import permutations
 
+
 def assemble(block, key):
     """
     Собирает блок сообщения на основе ключа.
-    
+
     :param block: Блок для сборки.
     :param key: Ключ, определяющий порядок символов в блоке.
     :return: Собранный блок.
@@ -14,10 +15,11 @@ def assemble(block, key):
         res += block[k]
     return res
 
+
 def disassemble(block, key):
     """
     Разбирает блок сообщения на основе ключа.
-    
+
     :param block: Блок для разборки.
     :param key: Ключ, определяющий порядок символов для разборки.
     :return: Разобранный блок.
@@ -28,6 +30,7 @@ def disassemble(block, key):
         res[k] = block[i]
     return "".join(res)
 
+
 def encrypt_message():
     """
     Шифрует сообщение, используя введённый ключ.
@@ -36,13 +39,17 @@ def encrypt_message():
     key_encrypt = input("Введите ключ для шифровки (например, '543162'): ")
     key_encrypt = list(int(i) - 1 for i in key_encrypt)
     d = int(input("Введите длину блока: "))
-    blocks_encrypt = [message_to_encrypt[i: min(i + d, len(message_to_encrypt))] for i in range(0, len(message_to_encrypt), d)]
-    
+    blocks_encrypt = [
+        message_to_encrypt[i : min(i + d, len(message_to_encrypt))]
+        for i in range(0, len(message_to_encrypt), d)
+    ]
+
     encrypted_message = ""
     for block in blocks_encrypt:
         encrypted_message += assemble(block, key_encrypt)
-    
+
     print(f"Зашифрованное сообщение: {encrypted_message}")
+
 
 def decrypt_message():
     """
@@ -52,24 +59,40 @@ def decrypt_message():
     key_decrypt = input("Введите ключ для расшифровки (например, '534126'): ")
     key_decrypt = list(int(i) - 1 for i in key_decrypt)
     d = int(input("Введите длину блока: "))
-    blocks_decrypt = [encrypted_message_to_decrypt[i: min(i + d, len(encrypted_message_to_decrypt))] for i in range(0, len(encrypted_message_to_decrypt), d)]
-    
+    blocks_decrypt = [
+        encrypted_message_to_decrypt[
+            i : min(i + d, len(encrypted_message_to_decrypt))
+        ]
+        for i in range(0, len(encrypted_message_to_decrypt), d)
+    ]
+
     decrypted_message = ""
     for block in blocks_decrypt:
         decrypted_message += disassemble(block, key_decrypt)
-    
+
     print(f"Расшифрованное сообщение: {decrypted_message}")
+
 
 def find_key():
     """
     Ищет ключ шифрования по открытому сообщению и зашифрованному.
     """
     open_message = input("Введите открытое сообщение: ")
-    encrypted_message_with_key = input("Введите зашифрованное сообщение с ключом: ")
+    encrypted_message_with_key = input(
+        "Введите зашифрованное сообщение с ключом: "
+    )
     d = int(input("Введите длину блока: "))
-    
-    blocks_open = [open_message[i: min(i + d, len(open_message))] for i in range(0, len(open_message), d)]
-    blocks_encrypted = [encrypted_message_with_key[i: min(i + d, len(encrypted_message_with_key))] for i in range(0, len(encrypted_message_with_key), d)]
+
+    blocks_open = [
+        open_message[i : min(i + d, len(open_message))]
+        for i in range(0, len(open_message), d)
+    ]
+    blocks_encrypted = [
+        encrypted_message_with_key[
+            i : min(i + d, len(encrypted_message_with_key))
+        ]
+        for i in range(0, len(encrypted_message_with_key), d)
+    ]
 
     key_found = None
     for perm in permutations(range(d)):
@@ -88,9 +111,12 @@ def find_key():
     else:
         print("Ключ не найден.")
 
+
 # Основной сценарий работы
 if __name__ == "__main__":
-    print("Выберите действие: 1 - Зашифровать, 2 - Расшифровать, 3 - Найти ключ")
+    print(
+        "Выберите действие: 1 - Зашифровать, 2 - Расшифровать, 3 - Найти ключ"
+    )
     choice = input("Введите номер действия: ")
 
     if choice == "1":
