@@ -24,7 +24,7 @@ class LinearCongruentialGenerator:
 
     def gen_params(self):
         "Генерация параметров a, b, c0"
-        t = int(time.time() * 10000)
+        t = int(time.time_ns() // 1e3 % 1e9)
 
         self.a = ((((t << t % 3) * 5 + 2) & ~3) | 1) % self.m
 
@@ -33,7 +33,7 @@ class LinearCongruentialGenerator:
             b = (b * 7 + 3) % self.m
         self.b = b
 
-        self.c0 = (t ^ self.a ^ self.b) % self.m
+        self.c0 = ~(t ^ self.a ^ self.b) % self.m
 
     def get_params(self):
         return (self.a, self.b, self.c0)
