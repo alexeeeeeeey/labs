@@ -10,13 +10,21 @@ from OpenGL.GL import (
     GL_DEPTH_TEST,
     GL_COLOR_BUFFER_BIT,
     GL_DEPTH_BUFFER_BIT,
+    glNormal3f,
     GL_PROJECTION,
     GL_MODELVIEW,
     glBindTexture,
     glTexParameteri,
     glLoadIdentity,
     glTexImage2D,
+    glLightfv,
+    GL_SPECULAR,
+    GL_AMBIENT,
+    GL_DIFFUSE,
+    GL_POSITION,
     GL_REPEAT,
+    GL_LIGHTING,
+    GL_LIGHT0,
     glGenTextures,
     glRotatef,
     GL_LINEAR,
@@ -67,18 +75,42 @@ def load_texture(texture_path):
     return texture_id
 
 
+def init_lighting():
+    glEnable(GL_LIGHTING)
+    glEnable(GL_LIGHT0)
+
+    light_position = [1, 1, 1, 0]
+    light_diffuse = [1.0, 1.0, 1.0, 1.0]
+    light_ambient = [0.2, 0.2, 0.2, 1.0]
+    light_specular = [1.0, 1.0, 1.0, 1.0]
+
+    glLightfv(GL_LIGHT0, GL_POSITION, light_position)
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse)
+    glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient)
+    glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular)
+
+
+def calculate_side_normal(angle):
+    x = math.cos(angle)
+    y = math.sin(angle)
+    return x, y, 0
+
+
 def draw_cylinder(can_texture_id, can_up_down_texture_id):
     radius = 1
     height = 2
     segments = 50
 
-    # боковая часть
+    # Боковая часть
     glBindTexture(GL_TEXTURE_2D, can_texture_id)
     glBegin(GL_TRIANGLE_STRIP)
     for i in range(segments + 1):
         angle = 2 * math.pi * i / segments
         x = radius * math.cos(angle)
         y = radius * math.sin(angle)
+
+        normal = calculate_side_normal(angle)
+        glNormal3f(*normal)
 
         glTexCoord2f(i / segments, 1)
         glVertex3f(x, y, height)
@@ -87,9 +119,10 @@ def draw_cylinder(can_texture_id, can_up_down_texture_id):
         glVertex3f(x, y, -height)
     glEnd()
 
-    # верхнюя крышка
+    # Верхняя крышка
     glBindTexture(GL_TEXTURE_2D, can_up_down_texture_id)
     glBegin(GL_TRIANGLE_FAN)
+    glNormal3f(0.0, 0.0, 1.0)
     glTexCoord2f(0.5, 0.75)
     glVertex3f(0.0, 0.0, height)
     for i in range(segments + 1):
@@ -102,8 +135,10 @@ def draw_cylinder(can_texture_id, can_up_down_texture_id):
         glVertex3f(x, y, height)
     glEnd()
 
-    # дно
+    # Дно
+    glBindTexture(GL_TEXTURE_2D, can_up_down_texture_id)
     glBegin(GL_TRIANGLE_FAN)
+    glNormal3f(0.0, 0.0, -1.0)
     glTexCoord2f(0.5, 0.25)
     glVertex3f(0.0, 0.0, -height)
     for i in range(segments + 1):
@@ -140,6 +175,7 @@ init_opengl(800, 600)
 
 
 def main():
+    init_lighting()
     can_texture_id = load_texture(
         os.path.join(
             pathlib.Path(__file__).parent.resolve(),
