@@ -4,7 +4,7 @@ import pathlib
 import math
 from pygame.locals import DOUBLEBUF, OPENGL, K_w, K_d, K_s, K_a, K_LSHIFT, K_SPACE
 from OpenGL.GL import (
-    glCullFace, GL_BACK, GL_CULL_FACE,
+    glCullFace, GL_BACK, GL_CULL_FACE, GL_QUAD_STRIP, glIsTexture,
     glClearColor, glEnable, glClear, glBindTexture, glTexParameteri, glTexImage2D, glNormal3f, glBegin, glEnd,
     GL_DEPTH_TEST, GL_COLOR_BUFFER_BIT, GL_DEPTH_BUFFER_BIT, GL_QUADS, GL_TRIANGLE_STRIP, GL_TRIANGLE_FAN, glVertex3f,
     glTexCoord2f, glLightfv, GL_LIGHTING, GL_LIGHT0, GL_TEXTURE_2D, glGenTextures, GL_REPEAT, GL_LINEAR, GL_RGBA,
@@ -202,6 +202,39 @@ def handle_camera_movement():
         glTranslatef(0, -0.1, 0)
 
 
+def render_textured_sphere(texture, radius, slices, stacks):
+
+    glEnable(GL_TEXTURE_2D)
+    glBindTexture(GL_TEXTURE_2D, texture)
+
+    for i in range(stacks):
+        lat0 = math.pi * (-0.5 + i / stacks)  # Широта начала текущего сегмента
+        z0 = radius * math.sin(lat0)
+        zr0 = radius * math.cos(lat0)
+
+        lat1 = math.pi * (-0.5 + (i + 1) / stacks)  # Широта конца текущего сегмента
+        z1 = radius * math.sin(lat1)
+        zr1 = radius * math.cos(lat1)
+
+        glBegin(GL_QUAD_STRIP)
+        for j in range(slices, -1, -1):
+            lng = 2 * math.pi * (j / slices)  # Долгота
+            x = math.cos(lng)
+            y = math.sin(lng)
+
+            glNormal3f(x * zr0 / radius, y * zr0 / radius, z0 / radius)
+            glTexCoord2f(j / slices, i / stacks)
+            glVertex3f(x * zr0, y * zr0, z0)
+
+            glNormal3f(x * zr1 / radius, y * zr1 / radius, z1 / radius)
+            glTexCoord2f(j / slices, (i + 1) / stacks)
+            glVertex3f(x * zr1, y * zr1, z1)
+        glEnd()
+
+    glDisable(GL_TEXTURE_2D)
+
+
+
 def main():
     init_pygame(800, 600)
     init_opengl(800, 600)
@@ -211,6 +244,7 @@ def main():
     glTranslatef(0, 0, -3)
     glTranslatef(0, -0.5, 0)
 
+    ball_texture = load_texture(os.path.join(pathlib.Path(__file__).parent.resolve(), "textures", "lab7", "ball.jpg"))
     brick_texture = load_texture(os.path.join(pathlib.Path(__file__).parent.resolve(), "textures", "lab7", "brick.jpg"))
     grass_texture = load_texture(os.path.join(pathlib.Path(__file__).parent.resolve(), "textures", "lab7", "grass.jpg"))
     can_side_texture = load_texture(os.path.join(pathlib.Path(__file__).parent.resolve(), "textures", "lab6", "can_coca_loca.png"))
@@ -227,6 +261,11 @@ def main():
 
         draw_walls(brick_texture, 1, 1)
         draw_floor(grass_texture, 1)
+
+        glPushMatrix()
+        glTranslatef(-0.5, 0.25, 0)
+        render_textured_sphere(ball_texture, 0.1, 30, 30)
+        glPopMatrix()
 
         glPushMatrix()
         glTranslatef(0.5, 0.25, 0)
