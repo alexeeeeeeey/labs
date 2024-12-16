@@ -4,6 +4,7 @@ import pathlib
 import math
 from pygame.locals import DOUBLEBUF, OPENGL, K_w, K_d, K_s, K_a, K_LSHIFT, K_SPACE
 from OpenGL.GL import (
+    glCullFace, GL_BACK, GL_CULL_FACE,
     glClearColor, glEnable, glClear, glBindTexture, glTexParameteri, glTexImage2D, glNormal3f, glBegin, glEnd,
     GL_DEPTH_TEST, GL_COLOR_BUFFER_BIT, GL_DEPTH_BUFFER_BIT, GL_QUADS, GL_TRIANGLE_STRIP, GL_TRIANGLE_FAN, glVertex3f,
     glTexCoord2f, glLightfv, GL_LIGHTING, GL_LIGHT0, GL_TEXTURE_2D, glGenTextures, GL_REPEAT, GL_LINEAR, GL_RGBA,
@@ -51,15 +52,15 @@ def draw_walls(texture_id, size, height):
 
     # Задняя стена
     glBegin(GL_QUADS)
-    glNormal3f(0.0, 0.0, 1.0)
-    glTexCoord2f(0.0, 0.0)
-    glVertex3f(-size, 0, -size)
-    glTexCoord2f(0.0, 1.0)
-    glVertex3f(-size, height, -size)
-    glTexCoord2f(1.0, 1.0)
-    glVertex3f(size, height, -size)
+    glNormal3f(0.0, 0.0, -1.0)
     glTexCoord2f(1.0, 0.0)
     glVertex3f(size, 0, -size)
+    glTexCoord2f(1.0, 1.0)
+    glVertex3f(size, height, -size)
+    glTexCoord2f(0.0, 1.0)
+    glVertex3f(-size, height, -size)
+    glTexCoord2f(0.0, 0.0)
+    glVertex3f(-size, 0, -size)
     glEnd()
 
     # Правая стена
@@ -83,14 +84,15 @@ def draw_floor(texture_id, size):
     glBindTexture(GL_TEXTURE_2D, texture_id)
 
     glBegin(GL_QUADS)
-    glTexCoord2f(0.0, 0.0)
-    glVertex3f(-size, 0, -size)
-    glTexCoord2f(1.0, 0.0)
-    glVertex3f(size, 0, -size)
-    glTexCoord2f(1.0, 1.0)
-    glVertex3f(size, 0, size)
+    glNormal3f(0.0, -1.0, 0.0)
     glTexCoord2f(0.0, 1.0)
     glVertex3f(-size, 0, size)
+    glTexCoord2f(1.0, 1.0)
+    glVertex3f(size, 0, size)
+    glTexCoord2f(1.0, 0.0)
+    glVertex3f(size, 0, -size)
+    glTexCoord2f(0.0, 0.0)
+    glVertex3f(-size, 0, -size)
     glEnd()
 
     glDisable(GL_TEXTURE_2D)
@@ -136,10 +138,10 @@ def draw_cylinder(can_texture_id, can_top_bottom_texture_id):
     # Нижняя крышка
     glBindTexture(GL_TEXTURE_2D, can_top_bottom_texture_id)
     glBegin(GL_TRIANGLE_FAN)
-    glNormal3f(0.0, 0.0, -1.0)
+    glNormal3f(0.0, 1.0, 0.0)
     glTexCoord2f(0.5, 0.25)
     glVertex3f(0.0, 0.0, 0)
-    for i in range(segments + 1):
+    for i in range(segments, -1, -1):
         angle = 2 * math.pi * i / segments
         x = radius * math.cos(angle)
         y = radius * math.sin(angle)
@@ -204,6 +206,8 @@ def main():
     init_pygame(800, 600)
     init_opengl(800, 600)
     init_lighting()
+    glEnable(GL_CULL_FACE)
+    glCullFace(GL_BACK)
     glTranslatef(0, 0, -3)
     glTranslatef(0, -0.5, 0)
 
