@@ -93,12 +93,6 @@ def init_lighting():
     glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular)
 
 
-def calculate_side_normal(angle):
-    x = math.cos(angle)
-    y = math.sin(angle)
-    return x, y, 0
-
-
 def draw_cylinder(can_texture_id, can_up_down_texture_id):
     radius = 1
     height = 2
@@ -112,8 +106,7 @@ def draw_cylinder(can_texture_id, can_up_down_texture_id):
         x = radius * math.cos(angle)
         y = radius * math.sin(angle)
 
-        normal = calculate_side_normal(angle)
-        glNormal3f(*normal)
+        glNormal3f(math.cos(angle), math.sin(angle), 0)
 
         glTexCoord2f(i / segments, 1)
         glVertex3f(x, y, height)
