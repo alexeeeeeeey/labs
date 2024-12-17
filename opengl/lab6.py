@@ -4,6 +4,9 @@ import math
 import pathlib
 from pygame.locals import DOUBLEBUF, OPENGL
 from OpenGL.GL import (
+    glCullFace,
+    GL_CULL_FACE,
+    GL_BACK,
     glClearColor,
     glEnable,
     glClear,
@@ -90,12 +93,6 @@ def init_lighting():
     glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular)
 
 
-def calculate_side_normal(angle):
-    x = math.cos(angle)
-    y = math.sin(angle)
-    return x, y, 0
-
-
 def draw_cylinder(can_texture_id, can_up_down_texture_id):
     radius = 1
     height = 2
@@ -109,8 +106,7 @@ def draw_cylinder(can_texture_id, can_up_down_texture_id):
         x = radius * math.cos(angle)
         y = radius * math.sin(angle)
 
-        normal = calculate_side_normal(angle)
-        glNormal3f(*normal)
+        glNormal3f(math.cos(angle), math.sin(angle), 0)
 
         glTexCoord2f(i / segments, 1)
         glVertex3f(x, y, height)
@@ -141,7 +137,7 @@ def draw_cylinder(can_texture_id, can_up_down_texture_id):
     glNormal3f(0.0, 0.0, -1.0)
     glTexCoord2f(0.5, 0.25)
     glVertex3f(0.0, 0.0, -height)
-    for i in range(segments + 1):
+    for i in range(segments, -1, -1):
         angle = 2 * math.pi * i / segments
         x = radius * math.cos(angle)
         y = radius * math.sin(angle)
@@ -176,6 +172,8 @@ init_opengl(800, 600)
 
 def main():
     init_lighting()
+    glEnable(GL_CULL_FACE)
+    glCullFace(GL_BACK)
     can_texture_id = load_texture(
         os.path.join(
             pathlib.Path(__file__).parent.resolve(),
