@@ -17,11 +17,6 @@ class NeuralNetwork:
         )
         self.bias_output = np.zeros((1, output_size))
 
-        # Переменные для промежуточных вычислений
-        self.input_data = None
-        self.hidden_layer_activations = None
-        self.output_layer_activations = None
-
     @staticmethod
     def relu(x):
         return np.maximum(0, x)
@@ -85,13 +80,13 @@ class NeuralNetwork:
         self.bias_hidden -= learning_rate * gradient_bias_hidden
 
     def train(self, input_data, target_labels, epochs, learning_rate):
-        for epoch in range(epochs):
+        for epoch in range(1, epochs+1):
             # Прямой и обратный проходы
             self.forward(input_data)
             self.backward(target_labels, learning_rate)
 
             # Лог потерь каждые 50 эпох
-            if epoch % 50 == 0 or epoch == epochs - 1:
+            if epoch % 50 == 0:
                 loss = -np.mean(
                     target_labels
                     * np.log(self.output_layer_activations + 1e-9)
