@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Анкета пользователя</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Анкета пользователя</h1>
+            <p>Кто ты воин?</p>
+        </header>
+        <nav>
+            <a class="nav-card" href="index.html">Главная</a>
+            <a class="nav-card" href="characters.html">Персонажи</a>
+            <a class="nav-card" href="tech.html">Технологии</a>
+            <a class="nav-card" href="form.html">Анкета</a>
+            <a class="nav-card" href="test.html">Тест</a>
+        </nav>
+    
+    <form id="userForm">
+        <label>
+            Имя:
+            <input type="text" name="name" required>
+        </label>
+
+        <label>
+            Email:
+            <input type="email" name="email" required>
+        </label>
+
+        <label id="phoneLabel">
+            Телефон:<br>
+            <input id="phone" type="tel" name="phone main" required>
+            <button type="button" id="addPhone">+</button>
+        </label>
+
+        <label>
+            Хобби:
+            <select name="Хобби" id="hobbySelect" required>
+                <option value="">Выберите</option>
+                <option value="спорт">Спорт</option>
+                <option value="чтение">Чтение</option>
+                <option value="другое">Свой вариант</option>
+            </select>
+        </label>
+
+        <div id="sportsOptions" class="hidden">
+            <label>
+                Вид спорта:
+                <input type="text" name="Вид спорта">
+            </label>
+        </div>
+
+        <div id="customHobby" class="hidden">
+            <label>
+                Укажите ваше хобби:
+                <input type="text" name="Свой вариант">
+            </label>
+        </div>
+
+        <button type="submit">Отправить</button>
+    </form>
+
+    <div id="modal" class="hidden overlay">
+        <div class="modal">
+            <h2>Данные анкеты</h2>
+            <div id="modalContent"></div>
+            <button id="closeModal">Закрыть</button>
+        </div>
+    </div>
+
+    <script src="./form_script.js"></script>
+</body>
+</html>
