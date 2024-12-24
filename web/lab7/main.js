@@ -122,6 +122,8 @@ function updateEnemies() {
 
     if (enemies[i].y > canvas.height) {
       enemies.splice(i, 1);
+      if (!konamiActivated)
+        score--;
     }
   }
 }
