@@ -34,8 +34,8 @@ const konamiCode = [
 ];
 let konamiIndex = 0;
 
-document.addEventListener('keydown', (e) => {
-  if (e.code === konamiCode[konamiIndex]) {
+document.addEventListener('keydown', (key) => {
+  if (key.code === konamiCode[konamiIndex]) {
     konamiIndex++;
     if (konamiIndex === konamiCode.length) {
       activateKonami();
@@ -77,8 +77,8 @@ function drawRect(obj) {
 
 // Управление игроком
 const keys = {};
-document.addEventListener('keydown', (e) => keys[e.code] = true);
-document.addEventListener('keyup', (e) => keys[e.code] = false);
+document.addEventListener('keydown', (key) => keys[key.code] = true);
+document.addEventListener('keyup', (key) => keys[key.code] = false);
 
 function movePlayer() {
   if (!player.alive) return;
@@ -160,7 +160,7 @@ function checkCollisions() {
 function gameLoop(timestamp) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  if (!player.alive) {
+  if (!player.alive || score < 0) {
     ctx.fillStyle = 'white';
     ctx.font = '40px Arial';
     ctx.fillText('Game Over!', canvas.width / 2 - 100, canvas.height / 2);
