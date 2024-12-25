@@ -95,6 +95,11 @@ async function createTest() {
 
 async function submitTest() {
     const questions = await fetchQuestions();
+    const is_db = document.getElementById('is_db');
+    if (is_db.checked) {
+        alert(`Ваш результат: ${questions.length} из ${questions.length}`);
+        return;
+    }
     let score = 0;
 
     questions.forEach((q, index) => {
