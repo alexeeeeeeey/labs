@@ -11,7 +11,7 @@ class LinearCongruentialGenerator:
         self.gen_params()
         self.last = self.c0
 
-    def next(self, last_num=None, save_last=False):
+    def next(self, last_num=None, save_last: bool=False):
         if save_last:
             last_num = self.last
 
@@ -34,6 +34,7 @@ class LinearCongruentialGenerator:
         self.b = b
 
         self.c0 = ~(t ^ self.a ^ self.b) % self.m
+        self.last = self.c0
 
     def get_params(self):
         return (self.a, self.b, self.c0)
