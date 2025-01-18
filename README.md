@@ -1,3 +1,5 @@
+# Лабы ПетрГУ за 3 семестр
+
 ## ССылки на лабы
 ### [Ооп](https://ulearn.me/)
 ### [Компьютерная графика](https://drive.google.com/drive/folders/1gH_7uY7igDvGCaypuLrZEc3c7pb-aOc_?usp=drive_link)
